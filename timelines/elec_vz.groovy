@@ -5,7 +5,15 @@ import org.jlab.groot.data.GraphErrors
 def grtl = (1..6).collect{
   def gr = new GraphErrors('sec'+it)
   gr.setTitle("vz")
-  gr.setTitleY("vz (cm)")
+  gr.setTitleY("vz sigma (cm)")
+  gr.setTitleX("run number")
+  return gr
+}
+
+def grtl2 = (1..6).collect{
+  def gr = new GraphErrors('sec'+it)
+  gr.setTitle("vz")
+  gr.setTitleY("vz sigma (cm)")
   gr.setTitleX("run number")
   return gr
 }
@@ -26,7 +34,7 @@ for(arg in args) {
     def h2 = dir.getObject('/elec/H_neg_vz_S'+(it+1))
 
     grtl[it].addPoint(run, h1.getRMS(), 0, 0)
-    grtl[it].addPoint(run, h2.getRMS(), 0, 0)
+    grtl2[it].addPoint(run, h2.getRMS(), 0, 0)
 
     out.mkdir('/'+run)
     out.cd('/'+run)
@@ -38,4 +46,6 @@ for(arg in args) {
 out.mkdir('/timelines')
 out.cd('/timelines')
 grtl.each{ out.addDataSet(it) }
+grtl2.each{ out.addDataSet(it) }
+
 out.writeFile('vz_sigma.hipo')
