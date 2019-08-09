@@ -5,7 +5,7 @@ import org.jlab.groot.data.GraphErrors
 def grtl = (1..6).collect{
   def gr = new GraphErrors('sec'+it)
   gr.setTitle("vz")
-  gr.setTitleY("sqrt( adcLcorr * adcRcorr )")
+  gr.setTitleY("vz (cm)")
   gr.setTitleX("run number")
   return gr
 }
