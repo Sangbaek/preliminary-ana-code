@@ -3,7 +3,7 @@ import org.jlab.groot.data.GraphErrors
 // import ROOTFitter
 
 def grtl = (1..6).collect{
-  def gr = new GraphErrors('sec'+it)
+  def gr = new GraphErrors('elec sec'+it)
   gr.setTitle("vz")
   gr.setTitleY("vz sigma (cm)")
   gr.setTitleX("run number")
@@ -11,7 +11,7 @@ def grtl = (1..6).collect{
 }
 
 def grtl2 = (1..6).collect{
-  def gr = new GraphErrors('sec'+it)
+  def gr = new GraphErrors('neg sec'+it)
   gr.setTitle("vz")
   gr.setTitleY("vz sigma (cm)")
   gr.setTitleX("run number")
