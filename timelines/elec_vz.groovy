@@ -22,8 +22,8 @@ for(arg in args) {
   def run = m[0].toInteger()
 
   (0..<6).each{
-    def h1 = dir.getObject('H_elec_vz_S'+(it+1))
-    def h2 = dir.getObject('H_neg_vz_S'+(it+1))
+    def h1 = dir.getObject('/elec/H_elec_vz_S'+(it+1))
+    def h2 = dir.getObject('/elec/H_neg_vz_S'+(it+1))
 
     grtl[it].addPoint(run, h1.getRMS(), 0, 0)
     grtl[it].addPoint(run, h2.getRMS(), 0, 0)
