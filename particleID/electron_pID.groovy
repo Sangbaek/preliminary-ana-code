@@ -18,8 +18,6 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 def run = args[0].toInteger()
 
 TDirectory out = new TDirectory()
-out.mkdir('/'+run)
-out.cd('/'+run)
 
 float EB = 10.6f
 if(run>6607) EB=10.2f
