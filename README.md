@@ -21,5 +21,8 @@ use COATJAVA's coatjava bin run-groovy
 ```
 cd particleID
 $COATJAVA/bin/run-groovy electron_pID.groovy 5038 `find /path/to/hipo/files/for/one/run`
+```
 You can use run_electron.sh to automate the process.
+```
+/particleID/run_electron.sh
 ```
