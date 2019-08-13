@@ -78,7 +78,10 @@ public void processEvent(DataEvent event) {
 	    	H_neg_vz[secs[ind]-1].fill(vz) //vz
 	    	if (pid==11) H_elec_vz[secs[ind]-1].fill(vz) //electron
 	    	H_neg_EC_Sampl[secs[ind]-1].fill(sampl_frac) // sampling Fraction
-	    	if (pid==11) H_elec_EC_Sampl[secs[ind]-1].fill(sampl_frac) //electron
+	    	H_neg_mom_Sampl[secs[ind]-1].fill(sampl_frac,mom)
+	    	if (pid==11) {
+	    		H_elec_EC_Sampl[secs[ind]-1].fill(sampl_frac) //electron
+	    		H_elec_mom_Sampl[secs[ind]-1].fill(sampl_frac,mom)
 	    	if(!event.hasBank("REC::Cherenkov")) return
 	    	def evh = event.getBank("REC::Cherenkov")
 	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
