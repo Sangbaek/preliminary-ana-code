@@ -47,9 +47,13 @@ for (arg in args){
 	out.addDataSet(H_elec_vz[it])
 	out.addDataSet(H_elec_HTCC_nphe[it])
 	out.addDataSet(H_elec_EC_Sampl[it])
+	out.addDataSet(H_elec_mom_nphe[it])
+	out.addDataSet(H_elec_mom_Sampl[it])
 	out.addDataSet(H_neg_vz[it])
 	out.addDataSet(H_neg_HTCC_nphe[it])
 	out.addDataSet(H_neg_EC_Sampl[it])
+	out.addDataSet(H_neg_mom_nphe[it])
+	out.addDataSet(H_neg_mom_Sampl[it])
 }
 
 out.writeFile('electron_pID_'+run+'.hipo')
