@@ -82,6 +82,7 @@ public void processEvent(DataEvent event) {
 	    	if (pid==11) {
 	    		H_elec_EC_Sampl[secs[ind]-1].fill(sampl_frac) //electron
 	    		H_elec_mom_Sampl[secs[ind]-1].fill(sampl_frac,mom)
+	    	}
 	    	if(!event.hasBank("REC::Cherenkov")) return
 	    	def evh = event.getBank("REC::Cherenkov")
 	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
