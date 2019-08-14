@@ -24,7 +24,9 @@ out.cd('/elec/')
 def EB = 10.6f
 if(run>6607) EB=10.2f
 
-HistoDef(EB)
+def binnum = args[1].toInteger()
+
+HistoDef(EB, binnum)
 
 int e_part_ind, e_sect, e_nphe
 float e_mom, e_theta, e_phi, e_vx, e_vy, e_vz, e_ecal_E, e_Sampl_frac
@@ -34,7 +36,7 @@ filenum=-1
 
 for (arg in args){
 	filenum++
-	if (filenum==0) continue
+	if (filenum<2) continue
 	HipoDataSource reader = new HipoDataSource();
 	reader.open(arg);
 	while( reader.hasEvent()){
@@ -56,7 +58,7 @@ for (arg in args){
 	out.addDataSet(H_neg_mom_Sampl[it])
 }
 
-out.writeFile('electron_pID_'+run+'.hipo')
+out.writeFile('electron_pID_'+run+'_bin_'+binnum+'.hipo')
 
 public void processEvent(DataEvent event) {
 	if(!event.hasBank("REC::Particle")) return 
@@ -100,15 +102,15 @@ public void processEvent(DataEvent event) {
     }
 }
 
-public void HistoDef(float eb){
-	H_elec_vz =(0..<6).collect{new H1F("H_elec_vz_S"+(it+1), "H_elec_vz_S"+(it+1),100,-25,25);}
-	H_elec_HTCC_nphe =(0..<6).collect{new H1F("H_elec_HTCC_nphe_S"+(it+1), "H_elec_HTCC_nphe_S"+(it+1),100,0,100);}
-	H_elec_EC_Sampl =(0..<6).collect{new H1F("H_elec_EC_Sampl_S"+(it+1), "H_elec_EC_Sampl_S"+(it+1),100,0,1);}
-	H_elec_mom_nphe =(0..<6).collect{new H2F("H_elec_mom_nphe_S"+(it+1), "H_elec_mom_nphe_S"+(it+1),100,0,100,100,0,eb);}
-	H_elec_mom_Sampl =(0..<6).collect{new H2F("H_elec_mom_Sampl_S"+(it+1), "H_elec_mom_Sampl_S"+(it+1),100,0,1,100,0,eb);}
-	H_neg_vz =(0..<6).collect{new H1F("H_neg_vz_S"+(it+1), "H_neg_vz_S"+(it+1),100,-25,25);}
-	H_neg_HTCC_nphe =(0..<6).collect{new H1F("H_neg_HTCC_nphe_S"+(it+1), "H_neg_HTCC_nphe_S"+(it+1),100,0,100);}
-	H_neg_EC_Sampl =(0..<6).collect{new H1F("H_neg_EC_Sampl_S"+(it+1), "H_neg_EC_Sampl_S"+(it+1),100,0,1);}
-	H_neg_mom_nphe =(0..<6).collect{new H2F("H_neg_mom_nphe_S"+(it+1), "H_neg_mom_nphe_S"+(it+1),100,0,100,100,0,eb);}
-	H_neg_mom_Sampl =(0..<6).collect{new H2F("H_neg_mom_Sampl_S"+(it+1), "H_neg_mom_Sampl_S"+(it+1),100,0,1,100,0,eb);}
+public void HistoDef(float eb, int binnum){
+	H_elec_vz =(0..<6).collect{new H1F("H_elec_vz_S"+(it+1), "H_elec_vz_S"+(it+1),binnum,-25,25);}
+	H_elec_HTCC_nphe =(0..<6).collect{new H1F("H_elec_HTCC_nphe_S"+(it+1), "H_elec_HTCC_nphe_S"+(it+1),binnum,0,100);}
+	H_elec_EC_Sampl =(0..<6).collect{new H1F("H_elec_EC_Sampl_S"+(it+1), "H_elec_EC_Sampl_S"+(it+1),binnum,0,1);}
+	H_elec_mom_nphe =(0..<6).collect{new H2F("H_elec_mom_nphe_S"+(it+1), "H_elec_mom_nphe_S"+(it+1),binnum,0,100,binnum,0,eb);}
+	H_elec_mom_Sampl =(0..<6).collect{new H2F("H_elec_mom_Sampl_S"+(it+1), "H_elec_mom_Sampl_S"+(it+1),binnum,0,1,binnum,0,eb);}
+	H_neg_vz =(0..<6).collect{new H1F("H_neg_vz_S"+(it+1), "H_neg_vz_S"+(it+1),binnum,-25,25);}
+	H_neg_HTCC_nphe =(0..<6).collect{new H1F("H_neg_HTCC_nphe_S"+(it+1), "H_neg_HTCC_nphe_S"+(it+1),binnum,0,100);}
+	H_neg_EC_Sampl =(0..<6).collect{new H1F("H_neg_EC_Sampl_S"+(it+1), "H_neg_EC_Sampl_S"+(it+1),binnum,0,1);}
+	H_neg_mom_nphe =(0..<6).collect{new H2F("H_neg_mom_nphe_S"+(it+1), "H_neg_mom_nphe_S"+(it+1),binnum,0,100,binnum,0,eb);}
+	H_neg_mom_Sampl =(0..<6).collect{new H2F("H_neg_mom_Sampl_S"+(it+1), "H_neg_mom_Sampl_S"+(it+1),binnum,0,1,binnum,0,eb);}
 }
