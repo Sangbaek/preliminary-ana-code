@@ -14,6 +14,7 @@ import org.jlab.clas.physics.Vector3;
 import org.jlab.clas.physics.LorentzVector;
 import org.jlab.groot.base.GStyle;
 import org.jlab.groot.graphics.EmbeddedCanvas;
+import electron
 
 def run = args[0].toInteger()
 
@@ -66,6 +67,7 @@ public void processEvent(DataEvent event) {
     def evc = event.getBank("REC::Calorimeter")
     def secs = [evc.getShort('pindex')*.toInteger(), evc.getByte('sector')].transpose().collectEntries()
     def evp = event.getBank("REC::Particle")
+    def eleind = electron.find_byBANK(evp)
     evp.getInt("pid").eachWithIndex{pid, ind ->
     	if(secs[ind]==null) return
 	    int charge = evp.getInt("charge",ind)
@@ -76,15 +78,12 @@ public void processEvent(DataEvent event) {
 	    	if (pindex==ind) energy+=evc.getFloat("energy",ind_c)
 	    }
    	    sampl_frac = energy/mom
-	    if (charge<0){
+
+   	    // Negative
+   	    if (charge<0){
 	    	H_neg_vz[secs[ind]-1].fill(vz) //vz
-	    	if (pid==11) H_elec_vz[secs[ind]-1].fill(vz) //electron
 	    	H_neg_EC_Sampl[secs[ind]-1].fill(sampl_frac) // sampling Fraction
 	    	H_neg_mom_Sampl[secs[ind]-1].fill(sampl_frac,mom)
-	    	if (pid==11) {
-	    		H_elec_EC_Sampl[secs[ind]-1].fill(sampl_frac) //electron
-	    		H_elec_mom_Sampl[secs[ind]-1].fill(sampl_frac,mom)
-	    	}
 	    	if(!event.hasBank("REC::Cherenkov")) return
 	    	def evh = event.getBank("REC::Cherenkov")
 	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
@@ -93,9 +92,21 @@ public void processEvent(DataEvent event) {
     				H_neg_HTCC_nphe[secs[ind]-1].fill(evh.getFloat("nphe",ind_h))
     				H_neg_mom_nphe[secs[ind]-1].fill(evh.getFloat("nphe",ind_h),mom)
     			}
-    			if(pid==11 && pindex==ind){
-    				H_elec_HTCC_nphe[secs[ind]-1].fill(evh.getFloat("nphe",ind_h))
-    				H_elec_mom_nphe[secs[ind]-1].fill(evh.getFloat("nphe",ind_h),mom)
+	    	}
+    	}
+
+    	// Electron
+    	if (ind==eleind){
+    		H_elec_vz[secs[ind]-1].fill(vz)
+			H_elec_EC_Sampl[secs[ind]-1].fill(sampl_frac) //electron
+	    	H_elec_mom_Sampl[secs[ind]-1].fill(sampl_frac,mom)
+	    	if(!event.hasBank("REC::Cherenkov")) return
+	    	def evh = event.getBank("REC::Cherenkov")
+	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
+	    		if(evh.getInt("detector",ind_h)!=15) return
+    			if(pindex==ind) {
+					H_elec_HTCC_nphe[secs[ind]-1].fill(evh.getFloat("nphe",ind_h))
+					H_elec_mom_nphe[secs[ind]-1].fill(evh.getFloat("nphe",ind_h),mom)
     			}
 	    	}
     	}
